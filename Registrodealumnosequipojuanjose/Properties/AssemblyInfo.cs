@@ -6,12 +6,12 @@ using System.Runtime.InteropServices;
 // conjunto de atributos. Cambie estos valores de atributo para modificar la información
 // asociada con un ensamblado.
 [assembly: AssemblyTitle("Registrodealumnosequipojuanjose")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Registra las calificaciones de los alumno")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("JAM'S Software")]
 [assembly: AssemblyProduct("Registrodealumnosequipojuanjose")]
 [assembly: AssemblyCopyright("Copyright ©  2026")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("JAM'S Software")]
 [assembly: AssemblyCulture("")]
 
 // Si establece ComVisible en false, los tipos de este ensamblado no estarán visibles 
