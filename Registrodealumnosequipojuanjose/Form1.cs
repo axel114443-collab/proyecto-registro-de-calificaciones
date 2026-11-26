@@ -217,6 +217,55 @@ namespace Registrodealumnosequipojuanjose
             w.Close();
             MessageBox.Show("Guardado con promedio!");
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.Rows.Count == 0)
+            {
+                MessageBox.Show("No hay datos para exportar");
+                return;
+            }
+
+            SaveFileDialog guarda = new SaveFileDialog();
+            guarda.Filter = "Archivo CSV|*.csv";
+            guarda.Title = "¿Qué nombre quieres para el archivo?";
+            guarda.FileName = "Reprobados_Morelos";
+
+            if (guarda.ShowDialog() == DialogResult.OK)
+            {
+                using (StreamWriter sw = new StreamWriter(guarda.FileName, false, System.Text.Encoding.UTF8))
+                {
+                    for (int i = 0; i < dataGridView1.Columns.Count; i++)
+                    {
+                        sw.Write(dataGridView1.Columns[i].HeaderText);
+                        if (i < dataGridView1.Columns.Count - 1) sw.Write(",");
+                    }
+                    sw.WriteLine();
+
+
+                    for (int i = 0; i < dataGridView1.Rows.Count; i++)
+                    {
+
+                        if (dataGridView1.Rows[i].IsNewRow) continue;
+
+                        for (int j = 0; j < dataGridView1.Columns.Count; j++)
+                        {
+                            if (dataGridView1.Rows[i].Cells[j].Value != null)
+                            {
+                                string valor = dataGridView1.Rows[i].Cells[j].Value.ToString();
+                                if (valor.Contains(","))
+                                    valor = "\"" + valor + "\"";
+
+                                sw.Write(valor);
+                            }
+                            if (j < dataGridView1.Columns.Count - 1) sw.Write(",");
+                        }
+                        sw.WriteLine();
+                    }
+                }
+                MessageBox.Show("Archivo CSV guardado en:\n" + guarda.FileName);
+            }
+        }
     }
     }
 
