@@ -25,7 +25,6 @@ namespace Registrodealumnosequipojuanjose
             dataGridView1.DataSource = alumnos;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-
             int aprobados = alumnos.Count(a => a.Promedio >= 6);
             int reprobados = alumnos.Count(a => a.Promedio < 6);
             lblAprobados.Text = "Aprobados: " + aprobados;
@@ -51,7 +50,6 @@ namespace Registrodealumnosequipojuanjose
             }
         }
 
-
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
 
@@ -61,28 +59,90 @@ namespace Registrodealumnosequipojuanjose
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(textBox1.Text) || string.IsNullOrWhiteSpace(textBox2.Text))
+                if (string.IsNullOrWhiteSpace(textBox1.Text))
                 {
-                    MessageBox.Show("Pon Nombre y Grupo");
+                    MessageBox.Show("El campo Nombre no puede estar vacío.", "Campo vacío", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    textBox1.Focus();
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(textBox2.Text))
+                {
+                    MessageBox.Show("El campo Grupo no puede estar vacío.", "Campo vacío", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    textBox2.Focus();
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(textBox3.Text))
+                {
+                    MessageBox.Show("El campo Calf1 no puede estar vacío.", "Campo vacío", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    textBox3.Focus();
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(textBox4.Text))
+                {
+                    MessageBox.Show("El campo Calf2 no puede estar vacío.", "Campo vacío", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    textBox4.Focus();
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(textBox5.Text))
+                {
+                    MessageBox.Show("El campo Calf3 no puede estar vacío.", "Campo vacío", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    textBox5.Focus();
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(textBox6.Text))
+                {
+                    MessageBox.Show("El campo Calf4 no puede estar vacío.", "Campo vacío", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    textBox6.Focus();
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(textBox7.Text))
+                {
+                    MessageBox.Show("El campo Calf5 no puede estar vacío.", "Campo vacío", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    textBox7.Focus();
                     return;
                 }
 
-                double c1 = double.Parse(textBox3.Text);
-                double c2 = double.Parse(textBox4.Text);
-                double c3 = double.Parse(textBox5.Text);
-                double c4 = double.Parse(textBox6.Text);
-                double c5 = double.Parse(textBox7.Text);
+                double c1, c2, c3, c4, c5;
+                if (!double.TryParse(textBox3.Text, out c1))
+                {
+                    MessageBox.Show("Calf1 debe ser un número de 0 a 10.", "Error de datos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    textBox3.Focus();
+                    return;
+                }
+                if (!double.TryParse(textBox4.Text, out c2))
+                {
+                    MessageBox.Show("Calf2 debe ser un número de 0 a 10.", "Error de datos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    textBox4.Focus();
+                    return;
+                }
+                if (!double.TryParse(textBox5.Text, out c3))
+                {
+                    MessageBox.Show("Calf3 debe ser un número de 0 a 10.", "Error de datos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    textBox5.Focus();
+                    return;
+                }
+                if (!double.TryParse(textBox6.Text, out c4))
+                {
+                    MessageBox.Show("Calf4 debe ser un número de 0 a 10.", "Error de datos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    textBox6.Focus();
+                    return;
+                }
+                if (!double.TryParse(textBox7.Text, out c5))
+                {
+                    MessageBox.Show("Calf5 debe ser un número de 0 a 10.", "Error de datos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    textBox7.Focus();
+                    return;
+                }
 
                 if (c1 < 0 || c1 > 10 || c2 < 0 || c2 > 10 || c3 < 0 || c3 > 10 || c4 < 0 || c4 > 10 || c5 < 0 || c5 > 10)
                 {
-                    MessageBox.Show("Las calificaciones solo pueden ser de 0 a 10");
+                    MessageBox.Show("Las calificaciones solo pueden ser de 0 a 10.", "Rango no válido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
                 string nombreNuevo = textBox1.Text.Trim();
                 string grupoNuevo = textBox2.Text.Trim();
 
-               
                 bool yaExiste = alumnos.Any(j =>
                     j.Nombre.Trim().Equals(nombreNuevo, StringComparison.OrdinalIgnoreCase) &&
                     j.Grupo.Trim().Equals(grupoNuevo, StringComparison.OrdinalIgnoreCase));
@@ -96,7 +156,7 @@ namespace Registrodealumnosequipojuanjose
 
                 if (yaExiste)
                 {
-                    MessageBox.Show("El alumno '" + nombreNuevo + "' ya está registrado.", "US3 - Duplicado");
+                    MessageBox.Show("El alumno '" + nombreNuevo + "' ya está registrado.", "Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -117,9 +177,13 @@ namespace Registrodealumnosequipojuanjose
                 actualizaVista();
                 limpiar();
             }
-            catch
+            catch (FormatException)
             {
-                MessageBox.Show("Llena todos los campos con numeros de 0 a 10");
+                MessageBox.Show("Revisa que las calificaciones sean números de 0 a 10.", "Error de datos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ocurrió un error inesperado: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -154,24 +218,24 @@ namespace Registrodealumnosequipojuanjose
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (indice != -1)
+            if (indice == -1)
             {
-                DialogResult res = MessageBox.Show("¿Seguro que quieres eliminar a " + alumnos[indice].Nombre + "?", "Confirmar borrado", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (res == DialogResult.Yes)
-                {
-                    alumnos.RemoveAt(indice);
-                    actualizaVista();
-                    limpiar();
-                }
+                MessageBox.Show("Selecciona un alumno de la tabla", "Eliminar", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
-            else
+
+            DialogResult res = MessageBox.Show("¿Seguro que quieres eliminar a " + alumnos[indice].Nombre + "?", "Confirmar borrado", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (res == DialogResult.Yes)
             {
-                MessageBox.Show("Selecciona un alumno de la tabla");
+                alumnos.RemoveAt(indice);
+                actualizaVista();
+                limpiar();
             }
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+           
             try
             {
                 if (!File.Exists("Alumnos.txt")) return;
@@ -187,18 +251,29 @@ namespace Registrodealumnosequipojuanjose
                     Alumnos a = new Alumnos();
                     a.Nombre = p[0];
                     a.Grupo = p[1];
-                    a.Cal1 = double.Parse(p[2]);
-                    a.Cal2 = double.Parse(p[3]);
-                    a.Cal3 = double.Parse(p[4]);
-                    a.Cal4 = double.Parse(p[5]);
-                    a.Cal5 = double.Parse(p[6]);
+
+                    double v1, v2, v3, v4, v5;
+                    if (!double.TryParse(p[2], out v1)) continue;
+                    if (!double.TryParse(p[3], out v2)) continue;
+                    if (!double.TryParse(p[4], out v3)) continue;
+                    if (!double.TryParse(p[5], out v4)) continue;
+                    if (!double.TryParse(p[6], out v5)) continue;
+
+                    a.Cal1 = v1;
+                    a.Cal2 = v2;
+                    a.Cal3 = v3;
+                    a.Cal4 = v4;
+                    a.Cal5 = v5;
 
                     alumnos.Add(a);
                 }
                 r.Close();
                 actualizaVista();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se pudo cargar el archivo de alumnos: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         private void textBox3_KeyPress(object sender, KeyPressEventArgs e) => SoloNumeros(e);
         private void textBox4_KeyPress(object sender, KeyPressEventArgs e) => SoloNumeros(e);
@@ -208,64 +283,75 @@ namespace Registrodealumnosequipojuanjose
 
         private void button3_Click(object sender, EventArgs e)
         {
-            TextWriter w = new StreamWriter("Alumnos.txt");
-            foreach (var p in alumnos)
+            try
             {
-
-                w.WriteLine(p.Nombre + "|" + p.Grupo + "|" + p.Cal1 + "|" + p.Cal2 + "|" + p.Cal3 + "|" + p.Cal4 + "|" + p.Cal5 + "|" + p.Promedio);
+                TextWriter w = new StreamWriter("Alumnos.txt");
+                foreach (var p in alumnos)
+                {
+                    w.WriteLine(p.Nombre + "|" + p.Grupo + "|" + p.Cal1 + "|" + p.Cal2 + "|" + p.Cal3 + "|" + p.Cal4 + "|" + p.Cal5 + "|" + p.Promedio);
+                }
+                w.Close();
+                MessageBox.Show("Guardado con promedio!", "Guardado", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            w.Close();
-            MessageBox.Show("Guardado con promedio!");
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se pudo guardar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.Rows.Count == 0)
+            try
             {
-                MessageBox.Show("No hay datos para exportar");
-                return;
-            }
-
-            SaveFileDialog guarda = new SaveFileDialog();
-            guarda.Filter = "Archivo CSV|*.csv";
-            guarda.Title = "¿Qué nombre quieres para el archivo?";
-            guarda.FileName = "Reprobados_Morelos";
-
-            if (guarda.ShowDialog() == DialogResult.OK)
-            {
-                using (StreamWriter sw = new StreamWriter(guarda.FileName, false, System.Text.Encoding.UTF8))
+                if (dataGridView1.Rows.Count == 0)
                 {
-                    for (int i = 0; i < dataGridView1.Columns.Count; i++)
+                    MessageBox.Show("No hay datos para exportar", "Exportar", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                SaveFileDialog guarda = new SaveFileDialog();
+                guarda.Filter = "Archivo CSV|*.csv";
+                guarda.Title = "¿Qué nombre quieres para el archivo?";
+                guarda.FileName = "Reprobados_Morelos";
+
+                if (guarda.ShowDialog() == DialogResult.OK)
+                {
+                    using (StreamWriter sw = new StreamWriter(guarda.FileName, false, System.Text.Encoding.UTF8))
                     {
-                        sw.Write(dataGridView1.Columns[i].HeaderText);
-                        if (i < dataGridView1.Columns.Count - 1) sw.Write(",");
-                    }
-                    sw.WriteLine();
-
-
-                    for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                    {
-
-                        if (dataGridView1.Rows[i].IsNewRow) continue;
-
-                        for (int j = 0; j < dataGridView1.Columns.Count; j++)
+                        for (int i = 0; i < dataGridView1.Columns.Count; i++)
                         {
-                            if (dataGridView1.Rows[i].Cells[j].Value != null)
-                            {
-                                string valor = dataGridView1.Rows[i].Cells[j].Value.ToString();
-                                if (valor.Contains(","))
-                                    valor = "\"" + valor + "\"";
-
-                                sw.Write(valor);
-                            }
-                            if (j < dataGridView1.Columns.Count - 1) sw.Write(",");
+                            sw.Write(dataGridView1.Columns[i].HeaderText);
+                            if (i < dataGridView1.Columns.Count - 1) sw.Write(",");
                         }
                         sw.WriteLine();
+
+                        for (int i = 0; i < dataGridView1.Rows.Count; i++)
+                        {
+                            if (dataGridView1.Rows[i].IsNewRow) continue;
+
+                            for (int j = 0; j < dataGridView1.Columns.Count; j++)
+                            {
+                                if (dataGridView1.Rows[i].Cells[j].Value != null)
+                                {
+                                    string valor = dataGridView1.Rows[i].Cells[j].Value.ToString();
+                                    if (valor.Contains(","))
+                                        valor = "\"" + valor + "\"";
+
+                                    sw.Write(valor);
+                                }
+                                if (j < dataGridView1.Columns.Count - 1) sw.Write(",");
+                            }
+                            sw.WriteLine();
+                        }
                     }
+                    MessageBox.Show("Archivo CSV guardado en:\n" + guarda.FileName, "Exportar", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                MessageBox.Show("Archivo CSV guardado en:\n" + guarda.FileName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se pudo exportar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
-    }
+}
 
